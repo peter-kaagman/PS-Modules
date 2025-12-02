@@ -13,14 +13,36 @@ Module for navigating nested hashtable structures and testing conditions against
 
 See [StructMatcher/README.md](StructMatcher/README.md) for detailed documentation.
 
+### JsonHelper
+
+Module for reading JSON files and converting them to PowerShell hashtables.
+
+**Version:** 1.0.0  
+**Author:** Peter Kaagman
+
+**Functions:**
+- `Get-JsonAsHashtable` - Reads a JSON file and returns its content as a hashtable
+- `ConvertTo-Hashtable` - Converts PSCustomObject to hashtable recursively
+
+**Example:**
+```powershell
+# Read JSON file directly as hashtable
+$config = Get-JsonAsHashtable -Path "C:\config.json"
+
+# Convert existing PSCustomObject
+$json = '{"key":"value"}' | ConvertFrom-Json
+$hash = ConvertTo-Hashtable $json
+```
+
 ## Installation
 
 ```powershell
 # Clone the repository
 git clone https://github.com/peter-kaagman/PS-Modules.git C:\HelloId\PS-Modules
 
-# Import a module
+# Import modules
 Import-Module C:\HelloId\PS-Modules\StructMatcher
+Import-Module C:\HelloId\PS-Modules\JsonHelper
 ```
 
 ### Using Symbolic Links
@@ -44,10 +66,14 @@ This allows you to maintain the modules in one location while using them across 
 ## Usage in Scripts
 
 ```powershell
-# Import from relative path
+# Import modules from relative path
 Import-Module ..\PS-Modules\StructMatcher
+Import-Module ..\PS-Modules\JsonHelper
 
-# Use the module
+# Load JSON config as hashtable
+$config = Get-JsonAsHashtable "config.json"
+
+# Use StructMatcher to test conditions
 $rules = @{
     conditions = @(
         @{ 
@@ -59,7 +85,7 @@ $rules = @{
     result = "Matched!"
 }
 
-Test-ConditionSet -rules $rules -data $myData
+Test-ConditionSet -rules $rules -data $config
 ```
 
 ## Development
