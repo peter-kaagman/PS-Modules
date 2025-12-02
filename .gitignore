@@ -1,0 +1,26 @@
+# Editor and OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# PowerShell
+*.ps1xml
+PSGetModuleInfo.xml
+
+# Build artifacts
+*.zip
+publish/
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Logs
+*.log
+
+# Temp files
+temp/
+tmp/
