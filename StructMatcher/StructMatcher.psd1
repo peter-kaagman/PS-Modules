@@ -4,7 +4,7 @@
 	GUID = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
 	Author = 'Peter Kaagman'
 	CompanyName = 'Atlas College'
-	Copyright = '(c) 2025 Atlas College. All rights reserved.'
+	Copyright = '(c) 2025 Peter Kaagman. Licensed under MIT License.'
 	Description = 'Module for testing conditions against nested hashtable structures and retrieving values from them.'
 	
 	# Module components

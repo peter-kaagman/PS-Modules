@@ -71,4 +71,6 @@ Each module has its own subdirectory with:
 
 ## License
 
-Copyright (c) 2025 Atlas College
+MIT License - see [LICENSE](LICENSE) file for details.
+
+Copyright (c) 2025 Peter Kaagman
