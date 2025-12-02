@@ -14,9 +14,11 @@ Import-Module C:\HelloId\StructMatcher
 
 Tests multiple conditions against a hashtable structure with AND logic. This is the main entry point of the module.
 
+**Important:** This function expects **hashtables** as input. If you have PSCustomObjects (e.g., from `ConvertFrom-Json`), use the [JsonHelper module](../JsonHelper/README.md) to convert them first.
+
 **Parameters:**
-- `rules` - Hashtable with `conditions` and `result` properties
-- `data` - The hashtable to test against
+- `rules` - Hashtable with `conditions` and `result` properties (type: `[hashtable]`)
+- `data` - The hashtable to test against (can contain nested hashtables and arrays)
 
 **Condition Properties:**
 - `level` - Array of property names representing the path through the nested structure (can be any depth)
@@ -87,6 +89,28 @@ $deepRules = @{
 
 Test-ConditionSet -rules $deepRules -data $deepData
 # Returns: "Developer found!" (navigates 5 levels deep)
+```
+
+## Working with JSON
+
+If your data comes from JSON files, use the JsonHelper module to convert to hashtables:
+
+```powershell
+# Load modules
+Import-Module C:\HelloId\PS-Modules\StructMatcher
+Import-Module C:\HelloId\PS-Modules\JsonHelper
+
+# Load JSON data as hashtable
+$rules = Get-JsonAsHashtable "C:\config\rules.json"
+$data = Get-JsonAsHashtable "C:\data\employees.json"
+
+# Test conditions
+$result = Test-ConditionSet -rules $rules -data $data
+
+# Alternative: Convert existing PSCustomObject
+$jsonData = Get-Content "data.json" | ConvertFrom-Json
+$hashtableData = ConvertTo-Hashtable $jsonData
+$result = Test-ConditionSet -rules $rules -data $hashtableData
 ```
 
 ## Internal Functions
