@@ -23,6 +23,24 @@ git clone https://github.com/peter-kaagman/PS-Modules.git C:\HelloId\PS-Modules
 Import-Module C:\HelloId\PS-Modules\StructMatcher
 ```
 
+### Using Symbolic Links
+
+For easier access from other repositories, you can create a symbolic link:
+
+```powershell
+# From your script repository directory
+cd C:\HelloId\YourScriptRepo
+New-Item -ItemType SymbolicLink -Path "PS-Modules" -Target "..\PS-Modules"
+
+# Or link individual modules
+New-Item -ItemType SymbolicLink -Path "StructMatcher" -Target "..\PS-Modules\StructMatcher"
+
+# Then import using relative paths
+Import-Module .\StructMatcher
+```
+
+This allows you to maintain the modules in one location while using them across multiple projects without duplication.
+
 ## Usage in Scripts
 
 ```powershell
