@@ -119,4 +119,5 @@ The module uses `Get-InfoFromStruct` internally for navigating hashtable structu
 
 ## Version History
 
+- **1.0.1** (2025-12-03) - Improved handling of missing properties: `Get-InfoFromStruct` now returns `$null` for non-existent properties instead of throwing exceptions, allowing conditions to gracefully fail when testing optional fields
 - **1.0.0** - Initial release
