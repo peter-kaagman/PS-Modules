@@ -34,6 +34,38 @@ $json = '{"key":"value"}' | ConvertFrom-Json
 $hash = ConvertTo-Hashtable $json
 ```
 
+See [JsonHelper/README.md](JsonHelper/README.md) for detailed documentation.
+
+### GraphHelper
+
+Module for efficient Microsoft Graph API requests with pagination and memory optimization.
+
+**Version:** 1.0.0  
+**Author:** Peter Kaagman
+
+**Functions:**
+- `Invoke-GraphAPIRequest` - Retrieves data from Graph API with pagination support and optional hashtable conversion
+
+**Features:**
+- Automatic pagination handling through `@odata.nextlink`
+- Memory-optimized for large datasets (tested with 2800+ items)
+- Optional hashtable return for fast lookups
+- Compatible with any Graph API endpoint (groups, users, devices, etc.)
+
+**Example:**
+```powershell
+# Get teams as hashtable for memory efficiency
+$teamHash = Invoke-GraphAPIRequest -Headers $headers `
+    -Filter "resourceProvisioningOptions/Any(x:x eq 'Team')" `
+    -Select "id,mailNickname,displayName" `
+    -ReturnAsHashTable
+
+# Fast lookup by mailNickname
+$teamId = $teamHash["EduTeam_24-25_4A"].id
+```
+
+See [GraphHelper/README.md](GraphHelper/README.md) for detailed documentation.
+
 ## Installation
 
 ```powershell
@@ -43,6 +75,7 @@ git clone https://github.com/peter-kaagman/PS-Modules.git C:\HelloId\PS-Modules
 # Import modules
 Import-Module C:\HelloId\PS-Modules\StructMatcher
 Import-Module C:\HelloId\PS-Modules\JsonHelper
+Import-Module C:\HelloId\PS-Modules\GraphHelper
 ```
 
 ### Using Symbolic Links
@@ -66,12 +99,19 @@ This allows you to maintain the modules in one location while using them across 
 ## Usage in Scripts
 
 ```powershell
-# Import modules from relative path
-Import-Module ..\PS-Modules\StructMatcher
-Import-Module ..\PS-Modules\JsonHelper
+# Import modules from absolute path
+Import-Module C:\HelloId\PS-Modules\StructMatcher
+Import-Module C:\HelloId\PS-Modules\JsonHelper
+Import-Module C:\HelloId\PS-Modules\GraphHelper
 
 # Load JSON config as hashtable
 $config = Get-JsonAsHashtable "config.json"
+
+# Query Microsoft Graph API with pagination
+$teams = Invoke-GraphAPIRequest -Headers $headers `
+    -Filter "resourceProvisioningOptions/Any(x:x eq 'Team')" `
+    -Select "id,mailNickname,displayName" `
+    -ReturnAsHashTable
 
 # Use StructMatcher to test conditions
 $rules = @{
