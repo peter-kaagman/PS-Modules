@@ -44,10 +44,105 @@ function Test-ConditionSet {
         $conditionMet = switch ($operator) {
             "Equals" { $found -eq $check }
             "NotEquals" { $found -ne $check }
-            "Contains" { $found -contains $check }
-            "NotContains" { $found -notcontains $check }
-            "In" { $found -in $check }
-            "NotIn" { $found -notin $check }
+            "Contains" {
+                # Robuuste contains: forceer $found naar array van strings indien mogelijk
+                $arr = $found
+                if ($null -eq $arr) {
+                    $arr = @()
+                } elseif ($arr -is [string]) {
+                    # Probeer te parsen als JSON-array, anders split op komma
+                    try {
+                        $parsed = $null
+                        if ($arr.Trim().StartsWith("[") -and $arr.Trim().EndsWith("]")) {
+                            $parsed = $arr | ConvertFrom-Json -ErrorAction Stop
+                        }
+                        if ($parsed -is [array]) {
+                            $arr = $parsed
+                        } else {
+                            $arr = $arr -split ','
+                        }
+                    } catch {
+                        $arr = $arr -split ','
+                    }
+                } elseif ($arr -isnot [array]) {
+                    $arr = @($arr)
+                }
+                # Flatten indien genest
+                while ($arr.Count -eq 1 -and $arr[0] -is [array]) { $arr = $arr[0] }
+                $arr -contains $check
+            }
+            "NotContains" {
+                $arr = $found
+                if ($null -eq $arr) {
+                    $arr = @()
+                } elseif ($arr -is [string]) {
+                    try {
+                        $parsed = $null
+                        if ($arr.Trim().StartsWith("[") -and $arr.Trim().EndsWith("]")) {
+                            $parsed = $arr | ConvertFrom-Json -ErrorAction Stop
+                        }
+                        if ($parsed -is [array]) {
+                            $arr = $parsed
+                        } else {
+                            $arr = $arr -split ','
+                        }
+                    } catch {
+                        $arr = $arr -split ','
+                    }
+                } elseif ($arr -isnot [array]) {
+                    $arr = @($arr)
+                }
+                while ($arr.Count -eq 1 -and $arr[0] -is [array]) { $arr = $arr[0] }
+                $arr -notcontains $check
+            }
+            "In" {
+                $arr = $check
+                if ($null -eq $arr) {
+                    $arr = @()
+                } elseif ($arr -is [string]) {
+                    try {
+                        $parsed = $null
+                        if ($arr.Trim().StartsWith("[") -and $arr.Trim().EndsWith("]")) {
+                            $parsed = $arr | ConvertFrom-Json -ErrorAction Stop
+                        }
+                        if ($parsed -is [array]) {
+                            $arr = $parsed
+                        } else {
+                            $arr = $arr -split ','
+                        }
+                    } catch {
+                        $arr = $arr -split ','
+                    }
+                } elseif ($arr -isnot [array]) {
+                    $arr = @($arr)
+                }
+                while ($arr.Count -eq 1 -and $arr[0] -is [array]) { $arr = $arr[0] }
+                $found -in $arr
+            }
+            "NotIn" {
+                $arr = $check
+                if ($null -eq $arr) {
+                    $arr = @()
+                } elseif ($arr -is [string]) {
+                    try {
+                        $parsed = $null
+                        if ($arr.Trim().StartsWith("[") -and $arr.Trim().EndsWith("]")) {
+                            $parsed = $arr | ConvertFrom-Json -ErrorAction Stop
+                        }
+                        if ($parsed -is [array]) {
+                            $arr = $parsed
+                        } else {
+                            $arr = $arr -split ','
+                        }
+                    } catch {
+                        $arr = $arr -split ','
+                    }
+                } elseif ($arr -isnot [array]) {
+                    $arr = @($arr)
+                }
+                while ($arr.Count -eq 1 -and $arr[0] -is [array]) { $arr = $arr[0] }
+                $found -notin $arr
+            }
             "Like" { $found -like $check }
             "NotLike" { $found -notlike $check }
             "Match" { $found -match $check }

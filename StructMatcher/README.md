@@ -26,10 +26,27 @@ Tests multiple conditions against a hashtable structure with AND logic. This is 
 - `check` - Value to compare against
 
 **Supported Operators:**
-- `Equals`, `NotEquals`
-- `Contains`, `NotContains`, `In`, `NotIn`
-- `Like`, `NotLike`, `Match`, `NotMatch`
-- `GreaterThan`, `LessThan`, `GreaterOrEqual`, `LessOrEqual`
+
+#### Supported Operators
+
+| Operator         | Werkt op           | Gedrag / Opmerking                                                                 |
+|------------------|-------------------|-----------------------------------------------------------------------------------|
+| Equals           | scalar, string    | Vergelijkt exact                                                                 |
+| NotEquals        | scalar, string    | Vergelijkt exact                                                                 |
+| Contains         | array, string     | Werkt op arrays (of strings met array-notatie, wordt automatisch geconverteerd)   |
+| NotContains      | array, string     | Zie Contains                                                                     |
+| In               | array, string     | $found wordt gezocht in $check (array of string met array-notatie)                |
+| NotIn            | array, string     | Zie In                                                                           |
+| Like             | string            | PowerShell -like operator, werkt op strings                                       |
+| NotLike          | string            | PowerShell -notlike operator, werkt op strings                                    |
+| Match            | string            | PowerShell -match operator, werkt op strings (regex)                              |
+| NotMatch         | string            | PowerShell -notmatch operator, werkt op strings (regex)                           |
+| GreaterThan      | scalar            | Vergelijkt getallen of strings                                                   |
+| LessThan         | scalar            | Vergelijkt getallen of strings                                                   |
+| GreaterOrEqual   | scalar            | Vergelijkt getallen of strings                                                   |
+| LessOrEqual      | scalar            | Vergelijkt getallen of strings                                                   |
+
+**Let op:** Voor Contains, NotContains, In en NotIn worden strings met array-notatie (zoals '["a","b"]') automatisch geconverteerd naar een array. Ook geneste arrays worden automatisch ge-flattened. Dit voorkomt typefouten bij JSON-data.
 
 **Example:**
 ```powershell
