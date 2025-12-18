@@ -66,6 +66,24 @@ $teamId = $teamHash["EduTeam_24-25_4A"].id
 
 See [GraphHelper/README.md](GraphHelper/README.md) for detailed documentation.
 
+### AtlasHelloIDFunctions
+
+Module met veelgebruikte hulpfuncties voor Atlas HelloID-scripts, zoals het ophalen van jaarlagen uit een lokaal JSON-bestand.
+
+**Version:** 1.0.0  
+**Author:** Atlas College
+
+**Functions:**
+- `Get-JaarLagen` – Haalt jaarlagen op uit `C:\HelloId\JSON\jaarlagen.json` als hashtable, optioneel alleen actieve jaarlagen (`-AktiefOnly`).
+
+**Voorbeeld:**
+```powershell
+Import-Module C:\HelloId\PS-Modules\AtlasHelloIDFunctions
+$jaarlagen = Get-JaarLagen -AktiefOnly $true
+```
+
+Zie [AtlasHelloIDFunctions/README.md](AtlasHelloIDFunctions/README.md) voor meer documentatie.
+
 ## Installation
 
 ```powershell

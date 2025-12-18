@@ -1,4 +1,8 @@
+
 # JsonHelper Module
+
+**Author:** Peter Kaagman ([prjv.kaagman@gmail.com](mailto:prjv.kaagman@gmail.com))  
+**Copyright:** © Peter Kaagman
 
 PowerShell module for reading JSON files and converting them to native PowerShell hashtables.
 
@@ -158,9 +162,10 @@ Import-Module ..\PS-Modules\JsonHelper
 - Full comment-based help
 - Error handling for file operations
 
+
 ## License
 
-MIT License - Copyright (c) 2025 Peter Kaagman
+This module is licensed under the [MIT License](../LICENSE).
 
 ## See Also
 

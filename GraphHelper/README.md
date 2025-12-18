@@ -2,56 +2,67 @@
 
 PowerShell module for efficient Microsoft Graph API requests with built-in pagination and memory optimization.
 
-## Installation
+
+
+# GraphHelper Module
+
+**Author:** Peter Kaagman ([prjv.kaagman@gmail.com](mailto:prjv.kaagman@gmail.com))  
+**Copyright:** © Peter Kaagman
+
+This module provides helper functions for interacting with Microsoft Graph API in PowerShell scripts. It is designed to simplify authentication, requests, and error handling when working with Microsoft Graph in HelloID automation scenarios.
+
+## Features
+
+- Simplified authentication to Microsoft Graph
+- Helper functions for common Graph API operations
+- Automatic handling of pagination and throttling (429 errors)
+- Consistent error handling and logging
+
+## Usage
+
+Import the module in your script:
 
 ```powershell
-Import-Module C:\HelloId\PS-Modules\GraphHelper
+Import-Module "C:\HelloId\PS-Modules\GraphHelper"
 ```
 
-## Public Functions
-
-### Invoke-GraphAPIRequest
-
-Retrieves data from Microsoft Graph API endpoints with automatic pagination handling and optional hashtable conversion for efficient lookups.
-
-**Parameters:**
-
-- `Headers` *(required)* - Authentication headers dictionary containing Bearer token
-- `Filter` *(required)* - OData filter expression (e.g., `"resourceProvisioningOptions/Any(x:x eq 'Team')"`)
-- `Select` *(required)* - Comma-separated list of properties to retrieve
-- `ReturnAsHashTable` *(optional switch)* - Returns results as hashtable instead of array (memory efficient for large datasets)
-- `HashTableKeyProperty` *(optional)* - Property name to use as hashtable key. Default: first property in `-Select`. Examples: `"mailNickname"`, `"id"`, `"userPrincipalName"`
-- `Endpoint` *(optional)* - Graph API endpoint (default: "groups"). Examples: "groups", "users", "devices"
-
-**Returns:**
-
-- Array of objects (default) or hashtable if `-ReturnAsHashTable` specified
-- Hashtable is keyed by the first property in `-Select` parameter
-
-## Examples
-
-### Example 1: Get Teams as Array
+Call the helper functions as needed. For example:
 
 ```powershell
-# Import modules
-Import-Module C:\HelloId\PS-Modules\GraphHelper
+$token = Get-GraphToken -TenantId $tenantId -ClientId $clientId -ClientSecret $clientSecret
+$users = Get-GraphUsers -Token $token
+```
 
-# Create authentication headers
-$authHeaders = @{
-    'Authorization' = "Bearer $accessToken"
-    'Accept' = 'application/json'
-    'Content-Type' = 'application/json'
-    'ConsistencyLevel' = 'eventual'
+## Example: Get Users from Microsoft Graph
+
+```powershell
+Import-Module "C:\HelloId\PS-Modules\GraphHelper"
+
+$token = Get-GraphToken -TenantId $tenantId -ClientId $clientId -ClientSecret $clientSecret
+$users = Get-GraphUsers -Token $token
+foreach ($user in $users) {
+    Write-Host $user.displayName
 }
-
-# Get all teams
-$allTeams = Invoke-GraphAPIRequest -Headers $authHeaders `
-    -Filter "resourceProvisioningOptions/Any(x:x eq 'Team')" `
-    -Select "id,mailNickname,displayName"
-
-Write-Host "Retrieved $($allTeams.Count) teams"
 ```
 
+## Error Handling
+
+The module automatically retries requests on 429 (Too Many Requests) errors, using the recommended retry-after interval. All errors are logged for troubleshooting.
+
+## Related Modules
+
+- [AtlasHelloIDFunctions](../AtlasHelloIDFunctions/README.md): Provides reusable HelloID functions, such as `Get-JaarLagen` for reading jaarlagen from JSON files. Example usage:
+
+    ```powershell
+    Import-Module "C:\HelloId\PS-Modules\AtlasHelloIDFunctions"
+    $jaarlagen = Get-JaarLagen -Path "C:\HelloId\JSON\jaarlagen.json"
+    ```
+
+- [JsonHelper](../JsonHelper/README.md): Utilities for working with JSON data in PowerShell.
+
+## License
+
+This module is licensed under the [MIT License](../LICENSE).
 ### Example 2: Get Teams as Hashtable (Memory Efficient)
 
 ```powershell
