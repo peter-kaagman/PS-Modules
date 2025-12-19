@@ -1,8 +1,3 @@
-# GraphHelper Module
-
-PowerShell module for efficient Microsoft Graph API requests with built-in pagination and memory optimization.
-
-
 
 # GraphHelper Module
 
@@ -51,11 +46,11 @@ The module automatically retries requests on 429 (Too Many Requests) errors, usi
 
 ## Related Modules
 
-- [AtlasHelloIDFunctions](../AtlasHelloIDFunctions/README.md): Provides reusable HelloID functions, such as `Get-JaarLagen` for reading jaarlagen from JSON files. Example usage:
+- [AtlasHelloIDFunctions](../AtlasHelloIDFunctions/README.md): Provides reusable HelloID functions, such as `Get-JaarLagen` for reading year layers from JSON files. Example usage:
 
     ```powershell
     Import-Module "C:\HelloId\PS-Modules\AtlasHelloIDFunctions"
-    $jaarlagen = Get-JaarLagen -Path "C:\HelloId\JSON\jaarlagen.json"
+    $yearLayers = Get-JaarLagen -Path "C:\HelloId\JSON\jaarlagen.json"
     ```
 
 - [JsonHelper](../JsonHelper/README.md): Utilities for working with JSON data in PowerShell.
