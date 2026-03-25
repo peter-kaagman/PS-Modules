@@ -79,7 +79,7 @@ function Invoke-GraphAPIRequest {
         $Endpoint = "groups"
     )
     try {
-        Write-Host "Getting list of $Endpoint"
+        # Write-Host "Getting list of $Endpoint"
         $baseUri = "https://graph.microsoft.com/"
         $Uri = "$($baseUri)/v1.0/$($Endpoint)?`$top=999&`$count=true&`$filter=$($Filter)&`$select=$($Select)"
         
